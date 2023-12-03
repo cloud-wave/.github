@@ -24,6 +24,7 @@
 
 - [ ] Unit tested (automated unit tests for these changes)
 - [ ] Locally integration tested (run locally against deployed APIs where relevant)
+- [ ] Deployed version tested (e.g. in dev)
 
 <br>
 
