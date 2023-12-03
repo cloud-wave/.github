@@ -10,8 +10,6 @@
 <!--- Why is this change required? What problem does it solve? -->
 <!--- If it fixes an open issue, please link to the JIRA here eg. NEON-123 -->
 
-NEON-
-
 <br>
 
 ## Screenshots 🌄
