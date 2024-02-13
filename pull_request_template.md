@@ -47,4 +47,4 @@
 - [ ] I have added tests to cover my changes.
 - [ ] All new and existing tests passed.
 - [ ] PR tags/labels have been added.
-- [ ] Copilot / LLM was used.
+- [ ] (Softphone Only) JAWS screen reader support/accessibility added 
