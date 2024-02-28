@@ -43,8 +43,7 @@
 <!--- Go over all the following points, and check all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
-- [ ] My code follows the code style of this project.
-- [ ] I have added tests to cover my changes.
-- [ ] All new and existing tests passed.
-- [ ] PR tags/labels have been added.
+- [x] My code follows the code style of this project.
+- [x] I have added tests to cover my changes.
+- [x] All new and existing tests passed.
 - [ ] (Softphone Only) JAWS screen reader support/accessibility added 
