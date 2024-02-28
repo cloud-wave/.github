@@ -22,9 +22,9 @@
 <!--- Include details of your testing environment, and the tests you ran -->
 <!--- how your change affects other areas of the code, etc. -->
 
-- [ ] Unit tested (automated unit tests for these changes)
-- [ ] Locally integration tested (run locally against deployed APIs where relevant)
-- [ ] Deployed version tested (e.g. in dev)
+- Unit tested (automated unit tests for these changes)
+- Locally integration tested (run locally against deployed APIs where relevant)
+- Deployed version tested (e.g. in dev)
 
 <br>
 
