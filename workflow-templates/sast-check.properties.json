@@ -1,5 +1,5 @@
 {
   "name": "SAST Check",
   "description": "Required static code analysis",
-  "iconName": "octicon shield-check",
+  "iconName": "octicon shield-check"
 }
