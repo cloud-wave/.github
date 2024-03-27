@@ -2,10 +2,6 @@ name: Static Code Analysis
 
 run-name: Performing static code analysis in pull request @${{ github.actor }}
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 on:
   workflow_call:
 
