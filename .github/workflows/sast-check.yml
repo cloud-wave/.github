@@ -20,8 +20,7 @@ jobs:
       - name: Bearer
         uses: bearer/bearer-action@v2
         with:
-          format: rdjson
-          output: rd.json
+          config-file: "./config-files/bearer.yml"
           diff: true
       - name: Run reviewdog
         if: always()
