@@ -18,7 +18,7 @@ rule:
   only-rule: []
   # Specify the comma-separated ids of the rules you would like to skip;
   # runs all other rules.
-  skip-rule: ["javascript_lang_logger", "javascript_lang_logger_leak"]
+  skip-rule: "javascript_lang_logger,javascript_lang_logger_leak"
 # Scan settings
 scan:
   # Specify the type of scanner (sast, secrets).
