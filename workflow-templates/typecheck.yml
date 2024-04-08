@@ -1,0 +1,13 @@
+name: Typecheck
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release/*
+      - epic/*
+
+jobs:
+  sast_check:
+      uses: cloud-wave/.github/workflows/typecheck.yml@main
+      secrets: inherit

@@ -1,0 +1,13 @@
+name: Lint
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release/*
+      - epic/*
+
+jobs:
+  sast_check:
+      uses: cloud-wave/.github/workflows/lint.yml@main
+      secrets: inherit
