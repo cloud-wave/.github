@@ -1,0 +1,13 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release/*
+      - epic/*
+
+jobs:
+  sast_check:
+      uses: cloud-wave/.github/workflows/test.yml@main
+      secrets: inherit
