@@ -1,4 +1,10 @@
-name: Static Code Analysis
+name: sast-check-runner
+
+run-name: Running static code analysis in pull request @${{ github.actor }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 on:
   pull_request:
@@ -6,6 +12,6 @@ on:
       - '*'
 
 jobs:
-  sast_check:
-      uses: cloud-wave/.github/workflows/sast-check.yml@main
-      secrets: inherit
+  sast_check_runner:
+    uses: cloud-wave/.github/.github/workflows/sast-check.yml@main
+    secrets: inherit
