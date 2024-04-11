@@ -3,7 +3,7 @@ name: sast-check-runner
 run-name: Running static code analysis in pull request @${{ github.actor }}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-sast
   cancel-in-progress: true
 
 on:
