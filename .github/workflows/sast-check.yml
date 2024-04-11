@@ -17,10 +17,11 @@ jobs:
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
+      - run: echo "${{ github.action_path }}" && ls -la ${{ github.action_path }} && ls -la /
       - name: Bearer
         uses: bearer/bearer-action@v2
         with:
-          config-file: "${{ github.workspace }}/config-files/bearer.yml"
+          config-file: "${{ github.action_path }}/config-files/bearer.yml"
           diff: true
       - name: Run reviewdog
         if: always()
