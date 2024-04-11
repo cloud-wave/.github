@@ -13,16 +13,21 @@ jobs:
   sast_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: 'cloud-wave/.github'
+          path: 'global-dot-github'
+          ref: 'main'
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
-      - run: echo "${{ github.action_path }}" && ls -la ${{ github.action_path }} && ls -la /
       - name: Bearer
         uses: bearer/bearer-action@v2
         with:
-          config-file: "${{ github.action_path }}/config-files/bearer.yml"
+          config-file: "global-dot-github/config-files/bearer.yml"
           diff: true
+          skip-path: "global-dot-github"
       - name: Run reviewdog
         if: always()
         env:
