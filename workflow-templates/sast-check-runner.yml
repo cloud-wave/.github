@@ -12,6 +12,6 @@ on:
       - '*'
 
 jobs:
-  sast_check_runner:
+  sast-check-runner:
     uses: cloud-wave/.github/.github/workflows/sast-check.yml@main
     secrets: inherit
