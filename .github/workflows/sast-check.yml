@@ -20,7 +20,7 @@ jobs:
       - name: Bearer
         uses: bearer/bearer-action@v2
         with:
-          config-file: "./config-files/bearer.yml"
+          config-file: "${{ github.workspace }}/config-files/bearer.yml"
           diff: true
       - name: Run reviewdog
         if: always()
