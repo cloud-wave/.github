@@ -17,17 +17,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: 'cloud-wave/.github'
-          path: 'global-dot-github'
           ref: 'main'
+          sparse-checkout: |
+            config-files/bearer.yml
+          sparse-checkout-cone-mode: false
+      - run: mv config-files /
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
       - name: Bearer
         uses: bearer/bearer-action@v2
         with:
-          config-file: "global-dot-github/config-files/bearer.yml"
+          config-file: "/config-files/bearer.yml"
           diff: true
-          skip-path: "global-dot-github"
       - name: Run reviewdog
         if: always()
         env:
