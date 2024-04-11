@@ -13,7 +13,6 @@ jobs:
   sast_check:
     runs-on: ubuntu-latest
     steps:
-      - run: ls -la . && pwd
       - uses: actions/checkout@v4
         with:
           repository: 'cloud-wave/.github'
@@ -21,9 +20,8 @@ jobs:
           sparse-checkout: |
             config-files/bearer.yml
           sparse-checkout-cone-mode: false
-      - run: mv config-files ../ &&  ls -la ../ && ls -la . && pwd
+      - run: mv config-files ../
       - uses: actions/checkout@v3
-      - run: ls -la . && ls -la ../ && pwd
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
