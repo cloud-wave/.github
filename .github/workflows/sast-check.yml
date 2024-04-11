@@ -22,6 +22,7 @@ jobs:
             config-files/bearer.yml
           sparse-checkout-cone-mode: false
       - run: mv config-files ../
+      - run: ls -la . && ls -la ../
       - uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
