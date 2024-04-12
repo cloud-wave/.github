@@ -7,9 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  pull_request:
-    branches:
-      - '*'
+  pull_request
 
 jobs:
   sast-check-runner:
