@@ -12,10 +12,10 @@
 
 <br>
 
-## Screenshots 🌄
-<!--- For UI work, provide screenshots of your changes. Remove this section if not relevant -->
+<!---## Screenshots 🌄 -->
+ <!---For UI work, provide screenshots of your changes. Remove this section if not relevant -->
 
-<br>
+<!---<br> -->
 
 ## How Has This Been Tested? 🖥️
 <!--- Please describe in detail how you tested your changes -->
@@ -46,4 +46,4 @@
 - [x] My code follows the code style of this project.
 - [x] I have added tests to cover my changes.
 - [x] All new and existing tests passed.
-- [ ] (Softphone Only) JAWS screen reader support/accessibility added 
+<!---- [ ] (Softphone Only) JAWS screen reader support/accessibility added -->
