@@ -128,8 +128,24 @@ read -rsp "🔐 Paste your Font Awesome API key (from Keeper > Development): " f
 echo "export FONTAWESOME_NPM_AUTH_TOKEN=$fa_token" >> ~/.zshrc
 
 # Completion message
-echo -e "\n🎉 All done! Restart your terminal or run: source ~/.zshrc"
-echo -e "\n📄 Log saved to: $LOG_FILE"
-echo -e "\n⚠️  Errors (if any) saved to: $ERROR_LOG"
-echo -e "\nHappy hacking, $NAME! 💻✨"
+echo -e "
+🎉 All done! Restart your terminal or run: source ~/.zshrc"
+echo -e "
+📄 Log saved to: $LOG_FILE"
+echo -e "
+⚠️  Errors (if any) saved to: $ERROR_LOG"
+
+# Learn more links for tools installed
+echo -e "
+📚 Learn more about the tools you've just installed:"
+echo -e "- fnm: https://github.com/Schniz/fnm"
+echo -e "- aws-sso-creds-helper: https://github.com/ryansonshine/aws-sso-creds-helper"
+echo -e "- eza: https://github.com/eza-community/eza"
+echo -e "- tldr: https://tldr.sh"
+echo -e "- gh (GitHub CLI): https://cli.github.com"
+echo -e "- yarn: https://yarnpkg.com"
+echo -e "- jq: https://stedolan.github.io/jq""
+
+echo -e "
+Happy hacking! 💻✨"
 
