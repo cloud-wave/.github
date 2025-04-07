@@ -89,7 +89,7 @@ step "Authenticate with GitHub CLI"
 if gh auth status &>/dev/null; then
   echo "✅ Already authenticated with GitHub CLI."
 else
-  gh auth login
+  gh auth login -s 'write:packages'
   echo "export GITHUB_TOKEN=$(gh auth token)" >> ~/.zshrc
   echo "export GH_NODE_AUTH_TOKEN=$(gh auth token)" >> ~/.zshrc
 fi
