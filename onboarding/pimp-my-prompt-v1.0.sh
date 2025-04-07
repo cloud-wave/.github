@@ -12,7 +12,7 @@ exec > >(tee -a "$LOG_FILE")
 exec 2> >(tee -a "$ERROR_LOG" >&2)
 
 # Define total steps for progress tracking
-TOTAL_STEPS=10
+TOTAL_STEPS=9
 CURRENT_STEP=1
 
 # Define step function to print progress
@@ -146,7 +146,7 @@ echo -e "- eza: https://github.com/eza-community/eza"
 echo -e "- tldr: https://tldr.sh"
 echo -e "- gh (GitHub CLI): https://cli.github.com"
 echo -e "- yarn: https://yarnpkg.com"
-echo -e "- jq: https://stedolan.github.io/jq""
+echo -e "- jq: https://stedolan.github.io/jq"
 
 echo -e "
 Happy hacking! 💻✨"
