@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Set the working directory to the user's home
 cd "$HOME"
 
