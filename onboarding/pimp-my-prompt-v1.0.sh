@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # Set the working directory to the user's home
 cd "$HOME"
@@ -50,8 +50,6 @@ echo -e "\n🚀 Welcome to *Pimp My Prompt* — the interactive terminal setup w
 echo -e "\n💡 Before we begin, we need to install a few essential tools to power this experience."
 echo ""
 read -rp "🔁 Press Enter to check/install Homebrew..."
-
-export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
 # Check and install Homebrew
 step "Checking and installing Homebrew"
