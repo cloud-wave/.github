@@ -57,11 +57,14 @@ if ! command -v brew &>/dev/null; then
   echo "🍺 Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
-  eval "$(/opt/homebrew/bin/brew shellenv)"
 else
   echo "✅ Homebrew is already installed."
 fi
 
+if command -v brew &>/dev/null; then
+  eval "$(brew shellenv)"
+fi
+  
 # Install core CLI tools
 step "Installing core CLI tools"
 brew install fnm yarn awscli gh eza jq tldr
@@ -70,6 +73,7 @@ brew install fnm yarn awscli gh eza jq tldr
 step "Creating folders and updating .zshrc"
 mkdir -p "$HOME/.zsh"
 mkdir -p "$HOME/repos"
+touch "$HOME/.zshrc"
 touch "$HOME/.zsh/alias.zsh"
 touch "$HOME/.zsh/functions.zsh"
 grep -qxF '[[ -f ~/.zsh/alias.zsh ]] && source ~/.zsh/alias.zsh' ~/.zshrc || echo '[[ -f ~/.zsh/alias.zsh ]] && source ~/.zsh/alias.zsh' >> ~/.zshrc
