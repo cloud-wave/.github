@@ -51,6 +51,8 @@ echo -e "\n💡 Before we begin, we need to install a few essential tools to pow
 echo ""
 read -rp "🔁 Press Enter to check/install Homebrew..."
 
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
 # Check and install Homebrew
 step "Checking and installing Homebrew"
 if ! command -v brew &>/dev/null; then
