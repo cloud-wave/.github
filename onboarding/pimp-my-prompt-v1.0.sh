@@ -170,7 +170,7 @@ step "Set up AWS SSO config"
 if [ -n "$GITHUB_TOKEN" ]; then
     echo "📥 Cloning AWS SSO configuration..."
     # Use gh CLI to clone (which handles auth automatically)
-    if gh repo clone cloud-wave/onboarding-files /tmp/aws-config &>/dev/null; then
+    if gh repo clone cloud-wave/onboarding-files /tmp/aws-config 2>/dev/null; then
       if [ -f /tmp/aws-config/aws-sso-config.ini ]; then
         cp /tmp/aws-config/aws-sso-config.ini "$HOME/.aws/config"
         echo "✅ AWS SSO config set up."
