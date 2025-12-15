@@ -208,7 +208,7 @@ else
 
   for repo in "${REPOS[@]}"; do
     targetDir="$HOME/repos/$(basename "$repo")"
-    printf "%2s/%s - %-54s" "$COUNT" "$TOTAL_REPOS" "$repo"
+    printf "%2s/%s - %-62s" "$COUNT" "$TOTAL_REPOS" "$repo"
 
     if [ -d "$targetDir" ]; then
       if [[ "$UPDATE_EXISTING" =~ ^[Yy]$ ]]; then
