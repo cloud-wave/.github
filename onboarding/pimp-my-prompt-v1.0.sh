@@ -30,18 +30,18 @@ cat << "EOF"
 │░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀▀░░▀░▀░▀░▀░░▀░░▀▀▀░░░▀░░░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀│
 └──────────────────────────────────────────────────────────────────────┘
 
-    ____  _                    __  ___     
+    ____  _                    __  ___
    / __ \(_)___ ___  ____     /  |/  /_  __
   / /_/ / / __ `__ \/ __ \   / /|_/ / / / /
- / ____/ / / / / / / /_/ /  / /  / / /_/ / 
-/_/   /_/_/ /_/ /_/ .___/  /_/  /_/\__, /  
-                 /_/              /____/   
-    ____                             __ 
+ / ____/ / / / / / / /_/ /  / /  / / /_/ /
+/_/   /_/_/ /_/ /_/ .___/  /_/  /_/\__, /
+                 /_/              /____/
+    ____                             __
    / __ \_________  ____ ___  ____  / /_
   / /_/ / ___/ __ \/ __ `__ \/ __ \/ __/
- / ____/ /  / /_/ / / / / / / /_/ / /_  
-/_/   /_/   \____/_/ /_/ /_/ .___/\__/  
-                          /_/           
+ / ____/ /  / /_/ / / / / / / /_/ / /_
+/_/   /_/   \____/_/ /_/ /_/ .___/\__/
+                          /_/
 
 EOF
 
@@ -56,15 +56,47 @@ step "Checking and installing Homebrew"
 if ! command -v brew &>/dev/null; then
   echo "🍺 Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  # Determine the correct Homebrew path based on architecture
+  if [[ $(uname -m) == 'arm64' ]]; then
+    BREW_PATH="/opt/homebrew/bin/brew"
+  else
+    BREW_PATH="/usr/local/bin/brew"
+  fi
+
+  # Add Homebrew to current session immediately
+  if [ -f "$BREW_PATH" ]; then
+    eval "$($BREW_PATH shellenv)"
+  fi
+
+  # Add to .zprofile for future sessions
   echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+
 else
   echo "✅ Homebrew is already installed."
 fi
 
+# Ensure brew is available in current session
 if command -v brew &>/dev/null; then
   eval "$(brew shellenv)"
+else
+  # Fallback: try to load it manually
+  if [[ $(uname -m) == 'arm64' ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  else
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
 fi
-  
+
+# Verify brew is now available
+if ! command -v brew &>/dev/null; then
+  echo "❌ ERROR: Homebrew installation failed or cannot be loaded."
+  echo "Please run: eval \"\$(brew shellenv)\" and try again."
+  exit 1
+else
+  echo "✅ Homebrew is ready to use."
+fi
+
 # Install core CLI tools
 step "Installing core CLI tools"
 brew install fnm yarn awscli gh eza jq tldr
@@ -81,11 +113,27 @@ grep -qxF '[[ -f ~/.zsh/functions.zsh ]] && source ~/.zsh/functions.zsh' ~/.zshr
 
 # Install Node.js using fnm
 step "Installing Node.js"
+
+# Ensure fnm is available
+if ! command -v fnm &>/dev/null; then
+  echo "❌ ERROR: fnm was not installed correctly."
+  exit 1
+fi
+
+# Initialize fnm in current session BEFORE using it
+eval "$(fnm env --use-on-cd)"
+
+# Add fnm initialization to .zshrc for future sessions
+if ! grep -q 'fnm env' ~/.zshrc; then
+  echo '' >> ~/.zshrc
+  echo '# Initialize fnm (Fast Node Manager)' >> ~/.zshrc
+  echo 'eval "$(fnm env --use-on-cd)"' >> ~/.zshrc
+fi
+
+# Now install and use Node.js
 if fnm list | grep -q "v20"; then
   echo "✅ Node.js 20 already installed."
-else
-  fnm install 20 && fnm use 20
-  eval "$(fnm env --use-on-cd)"
+  fnm use 20
 fi
 
 # GitHub CLI login
@@ -94,39 +142,102 @@ if gh auth status &>/dev/null; then
   echo "✅ Already authenticated with GitHub CLI."
 else
   gh auth login -s 'write:packages'
-  echo "export GITHUB_TOKEN=$(gh auth token)" >> ~/.zshrc
-  echo "export GH_NODE_AUTH_TOKEN=$(gh auth token)" >> ~/.zshrc
+fi
+
+# Export tokens for current session and future sessions
+if gh auth status &>/dev/null; then
+  GITHUB_TOKEN=$(gh auth token)
+  export GITHUB_TOKEN
+  export GH_NODE_AUTH_TOKEN="$GITHUB_TOKEN"
+
+  # Add to .zshrc for future sessions (avoid duplicates)
+  if ! grep -q 'GITHUB_TOKEN.*gh auth token' ~/.zshrc; then
+    echo '' >> ~/.zshrc
+    echo '# GitHub CLI tokens' >> ~/.zshrc
+    echo 'export GITHUB_TOKEN=$(gh auth token)' >> ~/.zshrc
+    echo 'export GH_NODE_AUTH_TOKEN=$(gh auth token)' >> ~/.zshrc
+  fi
+
+  echo "✅ GitHub tokens exported."
 fi
 
 # Optional AWS SSO config
 step "Set up AWS SSO config"
 if [ -n "$GITHUB_TOKEN" ]; then
-  mkdir -p "$HOME/.aws"
-  git clone https://github.com/cloud-wave/onboarding-files.git /tmp/aws-config
-  cp /tmp/aws-config/aws-sso-config.ini "$HOME/.aws/config"
-  rm -rf /tmp/aws-config
-  echo "✅ AWS SSO config set up."
+    echo "📥 Cloning AWS SSO configuration..."
+    # Use gh CLI to clone (which handles auth automatically)
+    if gh repo clone cloud-wave/onboarding-files /tmp/aws-config &>/dev/null; then
+      if [ -f /tmp/aws-config/aws-sso-config.ini ]; then
+        cp /tmp/aws-config/aws-sso-config.ini "$HOME/.aws/config"
+        echo "✅ AWS SSO config set up."
+      else
+        echo "⚠️  AWS config file not found in repository."
+      fi
+      rm -rf /tmp/aws-config
+    else
+      echo "⚠️  Could not clone AWS config repository. Skipping."
+    fi
+else
+  echo "⚠️  GitHub authentication not completed. Skipping AWS SSO config."
 fi
 
 # Install global npm packages
-step "Install global npm packages"
-npm install -g serve aws-sso-creds-helper
-
-# Clone NEONNOW GitHub repos
 step "Clone NEONNOW GitHub repos"
+echo "🔍 Searching for NEONNOW repositories..."
 REPOS=( $(gh search repos --limit=100 --owner=cloud-wave --topic=neonnow --json fullName --jq '.[].fullName' | grep '^cloud-wave/neon-') )
 TOTAL_REPOS=${#REPOS[@]}
-COUNT=1
-for repo in "${REPOS[@]}"; do
-  targetDir="$HOME/repos/$(basename "$repo")"
-  printf "%2s/%s - Cloning %-54s" "$COUNT" "$TOTAL_REPOS" "$repo"
-  if gh repo clone "$repo" "$targetDir" &>/dev/null; then
-    echo " ✅"
-  else
-    echo " ❌"
-  fi
-  ((COUNT++))
-done
+
+if [ "$TOTAL_REPOS" -eq 0 ]; then
+  echo "⚠️  No NEONNOW repositories found."
+else
+  echo "📦 Found $TOTAL_REPOS repositories."
+
+  # Ask if user wants to update existing repos
+  read -rp "🔄 Update existing repositories? (y/N): " UPDATE_EXISTING
+  UPDATE_EXISTING=${UPDATE_EXISTING:-n}
+
+  COUNT=1
+  CLONED=0
+  UPDATED=0
+  SKIPPED=0
+  FAILED=0
+
+  for repo in "${REPOS[@]}"; do
+    targetDir="$HOME/repos/$(basename "$repo")"
+    printf "%2s/%s - %-54s" "$COUNT" "$TOTAL_REPOS" "$repo"
+
+    if [ -d "$targetDir" ]; then
+      if [[ "$UPDATE_EXISTING" =~ ^[Yy]$ ]]; then
+        if (cd "$targetDir" && git pull --quiet &>/dev/null); then
+          echo " 🔄 (updated)"
+          ((UPDATED++))
+        else
+          echo " ⚠️  (update failed)"
+          ((FAILED++))
+        fi
+      else
+        echo " ⏭️  (already exists)"
+        ((SKIPPED++))
+      fi
+    else
+      if gh repo clone "$repo" "$targetDir" &>/dev/null; then
+        echo " ✅"
+        ((CLONED++))
+      else
+        echo " ❌"
+        ((FAILED++))
+      fi
+    fi
+    ((COUNT++))
+  done
+
+  echo ""
+  echo "📊 Summary:"
+  [ "$CLONED" -gt 0 ] && echo "   ✅ Cloned: $CLONED"
+  [ "$UPDATED" -gt 0 ] && echo "   🔄 Updated: $UPDATED"
+  [ "$SKIPPED" -gt 0 ] && echo "   ⏭️  Skipped: $SKIPPED"
+  [ "$FAILED" -gt 0 ] && echo "   ❌ Failed: $FAILED"
+fi
 
 # Save Font Awesome API token
 step "Save Font Awesome API token"
@@ -154,4 +265,3 @@ echo -e "- jq: https://stedolan.github.io/jq"
 
 echo -e "
 Happy hacking! 💻✨"
-
