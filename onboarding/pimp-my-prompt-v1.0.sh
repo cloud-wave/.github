@@ -187,6 +187,16 @@ else
 fi
 
 # Install global npm packages
+step "Install global npm packages (serve, aws-sso-creds-helper)"
+if npm list -g serve aws-sso-creds-helper >/dev/null 2>&1; then
+  echo "✅ 'serve' and 'aws-sso-creds-helper' already installed globally."
+else
+  if npm install -g serve aws-sso-creds-helper; then
+    echo "✅ Installed 'serve' and 'aws-sso-creds-helper' globally."
+  else
+    echo "⚠️  Failed to install 'serve' and/or 'aws-sso-creds-helper'. Please check your npm setup."
+  fi
+fi
 step "Clone NEONNOW GitHub repos"
 echo "🔍 Searching for NEONNOW repositories..."
 REPOS=( $(gh search repos --limit=100 --owner=cloud-wave --topic=neonnow --json fullName --jq '.[].fullName' | grep '^cloud-wave/neon-') )
