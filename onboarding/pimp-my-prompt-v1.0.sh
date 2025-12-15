@@ -135,10 +135,15 @@ if ! grep -q 'fnm env' ~/.zshrc; then
 fi
 
 # Now install and use Node.js
-if fnm list | grep -q "v20"; then
-  echo "✅ Node.js 20 already installed."
-  fnm use 20
+if fnm list | grep -q "v22"; then
+  echo "✅ Node.js 22 already installed."
+  fnm use 22
+else
+  echo "⬇️  Installing Node.js 22 with fnm..."
+  fnm install 22
+  fnm use 22
 fi
+
 
 # GitHub CLI login
 step "Authenticate with GitHub CLI"
