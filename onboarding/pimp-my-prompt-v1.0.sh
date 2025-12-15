@@ -197,6 +197,8 @@ else
     echo "⚠️  Failed to install 'serve' and/or 'aws-sso-creds-helper'. Please check your npm setup."
   fi
 fi
+
+# Clone CloudWave repos
 step "Clone NEONNOW GitHub repos"
 echo "🔍 Searching for NEONNOW repositories..."
 REPOS=( $(gh search repos --limit=100 --owner=cloud-wave --topic=neonnow --json fullName --jq '.[].fullName' | grep '^cloud-wave/neon-') )
