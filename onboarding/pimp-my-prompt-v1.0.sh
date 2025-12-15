@@ -172,6 +172,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     # Use gh CLI to clone (which handles auth automatically)
     if gh repo clone cloud-wave/onboarding-files /tmp/aws-config 2>/dev/null; then
       if [ -f /tmp/aws-config/aws-sso-config.ini ]; then
+        mkdir -p "$HOME/.aws"
         cp /tmp/aws-config/aws-sso-config.ini "$HOME/.aws/config"
         echo "✅ AWS SSO config set up."
       else
