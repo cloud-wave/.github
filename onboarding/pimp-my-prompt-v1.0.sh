@@ -70,7 +70,11 @@ if ! command -v brew &>/dev/null; then
   fi
 
   # Add to .zprofile for future sessions
-  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+  if [[ $(uname -m) == 'arm64' ]]; then
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+  else
+    echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
+  fi
 
 else
   echo "✅ Homebrew is already installed."
